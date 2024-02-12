@@ -1,4 +1,5 @@
 const orderModel = require('../models/orderModel');
+const productModel = require('../../product-catelog/models');
 
 const getAllOrders = async (req, res) => {
     try {
