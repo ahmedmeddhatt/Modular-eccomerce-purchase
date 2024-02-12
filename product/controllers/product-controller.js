@@ -70,8 +70,8 @@ module.exports = (productModel) => {
     const updateProduct = async (req, res) => {
         try {
             const id = req.params.id;
-            const updatedProduct = req.body;
-            const product = await productModel.updateProduct(id, updatedProduct);
+            const {name, description, price} = req.body;
+            const product = await productModel.updateProduct(id, {name, description, price});
             if (product) {
                 res.status(201).json({
                     status: 'Product updated successfully',
@@ -96,17 +96,20 @@ module.exports = (productModel) => {
     const deleteProduct = async (req, res) => {
         try {
             const id = req.params.id;
-            const product = await productModel.deleteProduct(id);
+            const product = await productModel.getProductById(id);
             if (product) {
-                res.status(200).json({
-                    status: 'Product deleted successfully',
-                });
+               // delete product
+            await productModel.deleteProduct(id);
+            res.status(200).json({
+                status: 'Product deleted successfully',
+            });
             } else {
                 res.status(404).json({
                     status: "fail",
                     message: 'Product not found!'
                 })            
-            }
+            };
+           
         } catch (err) {
             console.error(err);
             res.status(500).json({ 

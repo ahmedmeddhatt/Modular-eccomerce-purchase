@@ -6,64 +6,106 @@ const getAllCustomers = async (req, res) => {
         res.status(200).json(customers);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Internal server error' });
+        res.status(500).json({ 
+            status: 'fail',
+            message: error.message
+         });
     }
 };
 
 const getCustomerById = async (req, res) => {
     try {
         const id = req.params.id;
-        const customer = await customersModel.getCustomerById(id);
-        if (customer) {
-            res.status(200).json(customer);
+        const customers = await customersModel.getCustomerById(id);
+        if (customers) {
+            res.status(200).json({
+                status: 'success',
+                length: customers.length,
+                data: customers
+            });
         } else {
-            res.status(404).json({ message: `Customer with ID ${id} not found` });
-        }
+            res.status(404).json({ 
+                status: 'fail',
+                message: error.message,
+             });
+        };
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Internal server error' });
+        res.status(500).json({ 
+            status: 'fail',
+            message: error.message
+         });
     }
 };
 
 const createCustomer = async (req, res) => {
     try {
-        const newCustomer = req.body;
-        const customer = await customersModel.createCustomer(newCustomer);
-        res.status(201).json(customer);
+        const {name, email, phone, address} = req.body;
+        const customer = await customersModel.createCustomer({name, email, phone, address});
+        res.status(201).json({
+            status: 'success',
+            message: 'Customer created successfully',
+            data: customer
+        });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Internal server error' });
+        res.status(500).json({ 
+            status: 'fail',
+            message: error.message
+         });
     }
 };
 
 const updateCustomer = async (req, res) => {
     try {
         const id = req.params.id;
-        const updatedCustomer = req.body;
-        const customer = await customersModel.updateCustomer(id, updatedCustomer);
+        const {name, email, phone, address} = req.body;
+        const customer = await customersModel.updateCustomer(id, {name, email, phone, address});
         if (customer) {
-            res.status(200).json(customer);
+            res.status(200).json({
+                status: 'success',
+                message: 'Customer updated successfully',
+                data: customer
+            });
         } else {
-            res.status(404).json({ message: `Customer with ID ${id} not found` });
+            res.status(404).json({ 
+            status: 'fail',
+            message: error.message
+         });
         }
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Internal server error' });
+        res.status(500).json({ 
+            status: 'fail',
+            message: error.message
+         });
     }
 };
 
 const deleteCustomer = async (req, res) => {
     try {
         const id = parseInt(req.params.id);
-        const customer = await customersModel.deleteCustomer(id);
+        const customer = await customersModel.getCustomerById(id);
         if (customer) {
-            res.status(200).json(customer);
-        } else {
-            res.status(404).json({ message: `Customer with ID ${id} not found` });
-        }
+            // delete customer
+            await customersModel.deleteCustomer(id);
+            res.status(200).json({
+                status: 'success',
+                message: 'Customer deleted successfully'
+            });
+   } else {
+            res.status(404).json({ 
+            status: 'fail',
+            message: error.message
+         });
+        };
+        
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Internal server error' });
+        res.status(500).json({ 
+            status: 'fail',
+            message: error.message
+         });
     }
 };
 

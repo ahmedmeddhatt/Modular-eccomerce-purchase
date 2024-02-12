@@ -11,6 +11,7 @@ app.use(express.json());
 // Routes
 const customersRoutes = require('./customer/routes/customerRoutes');
 const productRoutes = require('./product/routes/product-routes');
+const carrtRoutes = require('./shopping-cart/routes/cart-routes');
 const ordersRoutes = require('./order-management/routes/order-route');
 const paymentRoutes = require('./payment/routes/payment-route');
 const paypalService = require('./payment/services/paymentService');
@@ -50,6 +51,7 @@ app.get('/error', (req,res) => {
 // Routes middleware
 app.use('/api/customers', customersRoutes);
 app.use('/api/products', productRoutes);
+app.use('/api/cart', carrtRoutes);
 app.use('/api/orders', ordersRoutes);
 app.use('/api/payment', paymentRoutes);
 

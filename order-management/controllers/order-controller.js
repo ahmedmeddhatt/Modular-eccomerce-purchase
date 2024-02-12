@@ -44,7 +44,7 @@ const getOrderById = async (req, res) => {
 };
 
 const createOrder = async (req, res) => {
-    const { customerId, productId, quantity, totalAmount, orderStatus } = req.body;
+    const {customerId, productId, quantity, totalAmount, orderStatus } = req.body;
     try {
         console.log(productId);
     const Customer = await customerModel.getCustomerById(customerId);
@@ -67,7 +67,7 @@ const createOrder = async (req, res) => {
             total_amount: totalAmount,
             order_status: orderStatus
         });
-        
+
         // return all the order details
         order.customer = Customer.name;
         order.email = Customer.email;
@@ -120,18 +120,21 @@ const updateOrder = async (req, res) => {
 const deleteOrder = async (req, res) => {
     const { id } = req.params;
     try {
-        const order = await orderModel.deleteOrder(id);
+
+        const order = await orderModel.getOrderById(id);
         if (order) {
+            // delete order
+            await orderModel.deleteOrder(id);
             res.status(200).json({
-                message: "Order retrieved successfully",
-                data: order
+                message: "Order deleted successfully"
             });
         } else {
-             res.status(404).json({ 
+            res.status(404).json({ 
                 status: 'fail',
                 message: 'Order not found' 
             });
-        }
+        };
+        
     } catch (err) {
         console.error(err);
         res.status(500).json({ 
