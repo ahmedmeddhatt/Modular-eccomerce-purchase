@@ -5,6 +5,6 @@ CREATE TABLE carts (
     quantity INTEGER NOT NULL,
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW(),
-    FOREIGN KEY (customer_id) REFERENCES customer (id),
+    FOREIGN KEY (customer_id) REFERENCES customers (id),
     FOREIGN KEY (product_id) REFERENCES products (id)
 );

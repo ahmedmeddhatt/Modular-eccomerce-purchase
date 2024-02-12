@@ -1,41 +1,46 @@
-const db = require('./db');
+const db = require('../../db');
 
-const getAllCarts = async () => {
-    const query = 'SELECT * FROM carts';
+const getAllCustomers = async () => {
+    const query = `SELECT id, name, email, phone, created_at, updated_at address FROM customers`;
     const { rows } = await db.query(query);
     return rows;
 };
 
-const getCartById = async (id) => {
-    const query = 'SELECT * FROM carts WHERE id = $1';
+const getCustomerById = async (id) => {
+    const query = `SELECT id, name, email, phone, created_at, updated_at 
+    FROM customers WHERE id = $1`;
     const { rows } = await db.query(query, [id]);
     return rows[0];
 };
 
-const createCart = async (newCart) => {
-    const { customer_id, product_id, quantity } = newCart;
-    const query = 'INSERT INTO carts (customer_id, product_id, quantity) VALUES ($1, $2, $3) RETURNING *';
-    const { rows } = await db.query(query, [customer_id, product_id, quantity]);
+const createCustomer = async (newCart) => {
+    const { name, email, phone, address } = newCart;
+    const query = `INSERT INTO customers (name, email, phone, address) 
+    VALUES ($1, $2, $3, $4) 
+    RETURNING id, name, email, phone, created_at, updated_at`;
+    const { rows } = await db.query(query, [name, email, phone, address]);
     return rows[0];
 };
 
-const updateCart = async (id, updatedCart) => {
-    const { customer_id, product_id, quantity } = updatedCart;
-    const query = 'UPDATE carts SET customer_id = $1, product_id = $2, quantity = $3 WHERE id = $4 RETURNING *';
-    const { rows } = await db.query(query, [customer_id, product_id, quantity, id]);
+const updateCustomer = async (id, updatedCart) => {
+    const { name, email, phone, address } = updatedCart;
+    const query = 
+    `UPDATE customers SET name = $1, email = $2, phone = $3, address = $4 WHERE id = $5 
+    RETURNING id, name, email, phone, created_at, updated_at`;
+    const { rows } = await db.query(query, [name, email, phone, address, id]);
     return rows[0];
 };
 
-const deleteCart = async (id) => {
-    const query = 'DELETE FROM carts WHERE id = $1 RETURNING *';
+const deleteCustomer = async (id) => {
+    const query = `DELETE FROM customers WHERE id = $1`;
     const { rows } = await db.query(query, [id]);
     return rows[0];
 };
 
 module.exports = {
-    getAllCarts,
-    getCartById,
-    createCart,
-    updateCart,
-    deleteCart,
+    getAllCustomers,
+    getCustomerById,
+    createCustomer,
+    updateCustomer,
+    deleteCustomer,
 };

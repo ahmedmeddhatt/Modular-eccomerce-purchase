@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const createProductController = require('../controllers/product-controller');
 
-const productModel = require('../models/productModel')();
+const productModel = require('../models/productModel');
 const productController = createProductController(productModel);
 
 router.route('/')

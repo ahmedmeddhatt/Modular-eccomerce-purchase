@@ -1,4 +1,4 @@
-const db = require('./db');
+const db = require('../../db');
 
 const getAllOrders = async () => {
     const query = `SELECT id, customer_id, product_id, quantity, total_amount, order_status,
