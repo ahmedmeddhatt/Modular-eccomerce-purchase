@@ -1,23 +1,23 @@
-const cartModel = require('../models/customerModel');
+const customersModel = require('../models/customerModel');
 
-const getAllCarts = async (req, res) => {
+const getAllCustomers = async (req, res) => {
     try {
-        const carts = await cartModel.getAllCarts();
-        res.status(200).json(carts);
+        const customers = await customersModel.getAllCustomers();
+        res.status(200).json(customers);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal server error' });
     }
 };
 
-const getCartById = async (req, res) => {
+const getCustomerById = async (req, res) => {
     try {
-        const id = parseInt(req.params.id);
-        const cart = await cartModel.getCartById(id);
-        if (cart) {
-            res.status(200).json(cart);
+        const id = req.params.id;
+        const customer = await customersModel.getCustomerById(id);
+        if (customer) {
+            res.status(200).json(customer);
         } else {
-            res.status(404).json({ message: `Cart with ID ${id} not found` });
+            res.status(404).json({ message: `Customer with ID ${id} not found` });
         }
     } catch (error) {
         console.error(error);
@@ -25,26 +25,26 @@ const getCartById = async (req, res) => {
     }
 };
 
-const createCart = async (req, res) => {
+const createCustomer = async (req, res) => {
     try {
-        const newCart = req.body;
-        const cart = await cartModel.createCart(newCart);
-        res.status(201).json(cart);
+        const newCustomer = req.body;
+        const customer = await customersModel.createCustomer(newCustomer);
+        res.status(201).json(customer);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal server error' });
     }
 };
 
-const updateCart = async (req, res) => {
+const updateCustomer = async (req, res) => {
     try {
-        const id = parseInt(req.params.id);
-        const updatedCart = req.body;
-        const cart = await cartModel.updateCart(id, updatedCart);
-        if (cart) {
-            res.status(200).json(cart);
+        const id = req.params.id;
+        const updatedCustomer = req.body;
+        const customer = await customersModel.updateCustomer(id, updatedCustomer);
+        if (customer) {
+            res.status(200).json(customer);
         } else {
-            res.status(404).json({ message: `Cart with ID ${id} not found` });
+            res.status(404).json({ message: `Customer with ID ${id} not found` });
         }
     } catch (error) {
         console.error(error);
@@ -52,14 +52,14 @@ const updateCart = async (req, res) => {
     }
 };
 
-const deleteCart = async (req, res) => {
+const deleteCustomer = async (req, res) => {
     try {
         const id = parseInt(req.params.id);
-        const cart = await cartModel.deleteCart(id);
-        if (cart) {
-            res.status(200).json(cart);
+        const customer = await customersModel.deleteCustomer(id);
+        if (customer) {
+            res.status(200).json(customer);
         } else {
-            res.status(404).json({ message: `Cart with ID ${id} not found` });
+            res.status(404).json({ message: `Customer with ID ${id} not found` });
         }
     } catch (error) {
         console.error(error);
@@ -68,9 +68,9 @@ const deleteCart = async (req, res) => {
 };
 
 module.exports = {
-    getAllCarts,
-    getCartById,
-    createCart,
-    updateCart,
-    deleteCart,
+    getAllCustomers,
+    getCustomerById,
+    createCustomer,
+    updateCustomer,
+    deleteCustomer,
 };

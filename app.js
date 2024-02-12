@@ -9,7 +9,9 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 
 // Routes
-const productRoutes = require('./product-catelog/routes/product-routes');
+const customersRoutes = require('./customer/routes/customerRoutes');
+const productRoutes = require('./product/routes/product-routes');
+const ordersRoutes = require('./order-management/routes/order-route');
 const paymentRoutes = require('./payment/routes/payment-route');
 const paypalService = require('./payment/services/paymentService');
 
@@ -46,7 +48,9 @@ app.get('/error', (req,res) => {
 });
 
 // Routes middleware
+app.use('/api/customers', customersRoutes);
 app.use('/api/products', productRoutes);
+app.use('/api/orders', ordersRoutes);
 app.use('/api/payment', paymentRoutes);
 
 // Start server

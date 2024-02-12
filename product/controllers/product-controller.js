@@ -33,7 +33,10 @@ module.exports = (productModel) => {
             }
         } catch (err) {
             console.error(err);
-            res.status(500).send('Internal Server Error');
+            res.status(500).json({ 
+                status: 'fail',
+                error: err.message
+             });
         }
     };
 
@@ -56,7 +59,10 @@ module.exports = (productModel) => {
          };
         } catch (err) {
             console.error(err);
-            res.status(500).send('Internal Server Error');
+            res.status(500).json({ 
+                status: 'fail',
+                error: err.message
+             });
         }
     };
 
@@ -79,7 +85,10 @@ module.exports = (productModel) => {
                 }
         } catch (err) {
             console.error(err);
-            res.status(500).send('Internal Server Error');
+            res.status(500).json({ 
+                status: 'fail',
+                error: err.message
+             });
         }
     };
 
@@ -100,7 +109,10 @@ module.exports = (productModel) => {
             }
         } catch (err) {
             console.error(err);
-            res.status(500).send('Internal Server Error');
+            res.status(500).json({ 
+                status: 'fail',
+                error: err.message
+             });
         }
     };
 
