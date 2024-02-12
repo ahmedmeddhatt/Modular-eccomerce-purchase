@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rich Dad Book Payment</title>
+</head>
+<body>
+    <h1>Rich Dad Book</h1>
+    <p>Get your copy now for $250 USD!</p>
+
+    <!-- PayPal Payment Button -->
+    <form action="/api/payment/buy" method="get">
+        <!-- Include necessary payment details like book title, price, etc. as hidden fields -->
+        <input type="hidden" name="book_title" value="Rich Dad Book">
+        <input type="hidden" name="price" value="250">
+
+        <!-- PayPal Buy Now Button -->
+        <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_buynow_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online">
+        <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
+    </form>
+
+    <!-- Additional content or styles can be added here -->
+
+</body>
+</html>
