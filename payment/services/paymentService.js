@@ -9,25 +9,25 @@ paypal.configure({
     'client_secret': process.env.PAYPAL_CLIENT_SECRET
   });
 
-exports.getPaymentDetailsService = async () => {
+exports.getPaymentDetailsService = async (dbConnection) => {
 
     const query = `
     SELECT id, intent, state, payment_method, name, description, currency,
      price, quantity, create_time, links FROM payment
      `
 
-     const {rows} = await db.query(query);
+     const {rows} = await dbConnection.query(query);
      return rows;
   
 };
-exports.getPaymentByIdService = async (paymentId) => {
+exports.getPaymentByIdService = async (paymentId, dbConnection) => {
 
     const query = `
     SELECT id, intent, state, payment_method, name, description, currency,
      price, quantity, create_time, links FROM payment WHERE id = $1
      `
 
-     const {rows} = await db.query(query, [paymentId]);
+     const {rows} = await dbConnection.query(query, [paymentId]);
      return rows[0];
   
 };
@@ -48,7 +48,7 @@ exports.createPaypalPaymentService = async (payment) => {
 };
 
 
-exports.storePaymentInDatabase  = async (payment) => {
+exports.storePaymentInDatabase  = async (payment, dbConnection) => {
     const query = `
             INSERT INTO payment (id, intent, state, payment_method, name, price,
              currency, quantity, description, create_time, links)
@@ -71,7 +71,7 @@ exports.storePaymentInDatabase  = async (payment) => {
 
     ];
 
-    const {rows} = await db.query(query, values);
+    const {rows} = await dbConnection.query(query, values);
     return rows[0];
   
 };
