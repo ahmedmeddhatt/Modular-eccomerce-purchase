@@ -2,7 +2,7 @@
 
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 3000;
+const db = require('./db');
 
 
 // Middleware
@@ -26,7 +26,7 @@ app.get('/success', async (req,res) => {
     // res.sendFile(__dirname + '/success.html');
     try {
         const paymentId = req.query.paymentId;
-
+        
         const paymentDetails = await paypalService.getPaymentDetails(paymentId);
         res.status(200).json({
             status: 'uccess',
@@ -49,11 +49,32 @@ app.get('/error', (req,res) => {
 });
 
 // Routes middleware
-app.use('/api/customers', customersRoutes);
-app.use('/api/products', productRoutes);
-app.use('/api/cart', carrtRoutes);
-app.use('/api/orders', ordersRoutes);
-app.use('/api/payment', paymentRoutes);
+    app.use('/api/customers', (req, res, next) =>{
+        req.dbConnection = db.getDBConnection();
+        next();
+    }, customersRoutes );
+
+    app.use('/api/products', (req, res, next) =>{
+        req.dbConnection = db.getDBConnection();
+        next();
+    }, productRoutes);
+
+    app.use('/api/cart', (req, res, next) =>{
+        req.dbConnection = db.getDBConnection();
+        next();
+    }, carrtRoutes);
+
+    app.use('/api/orders', (req, res, next) =>{
+        req.dbConnection = db.getDBConnection();
+        next();
+    }, ordersRoutes);
+
+    app.use('/api/payment', (req, res, next) =>{
+        req.dbConnection = db.getDBConnection();
+        next();
+    }, paymentRoutes);
+
+const port = process.env.PORT || 3000;
 
 // Start server
 app.listen(port, () => {

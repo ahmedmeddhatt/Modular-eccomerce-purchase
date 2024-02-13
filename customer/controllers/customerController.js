@@ -1,8 +1,10 @@
 const customersModel = require('../models/customerModel');
+const db = require('../../db');
 
 const getAllCustomers = async (req, res) => {
     try {
-        const customers = await customersModel.getAllCustomers();
+        const dbConnection = db.getDBConnection();
+        const customers = await customersModel.getAllCustomers(dbConnection);
         res.status(200).json(customers);
     } catch (error) {
         console.error(error);
@@ -16,7 +18,8 @@ const getAllCustomers = async (req, res) => {
 const getCustomerById = async (req, res) => {
     try {
         const id = req.params.id;
-        const customers = await customersModel.getCustomerById(id);
+        const dbConnection = db.getDBConnection();
+        const customers = await customersModel.getCustomerById(id, dbConnection);
         if (customers) {
             res.status(200).json({
                 status: 'success',
@@ -26,7 +29,7 @@ const getCustomerById = async (req, res) => {
         } else {
             res.status(404).json({ 
                 status: 'fail',
-                message: error.message,
+                message: `Can not find Id: ${id}`,
              });
         };
     } catch (error) {
@@ -40,8 +43,9 @@ const getCustomerById = async (req, res) => {
 
 const createCustomer = async (req, res) => {
     try {
+        const dbConnection = db.getDBConnection();
         const {name, email, phone, address} = req.body;
-        const customer = await customersModel.createCustomer({name, email, phone, address});
+        const customer = await customersModel.createCustomer({name, email, phone, address}, dbConnection);
         res.status(201).json({
             status: 'success',
             message: 'Customer created successfully',
@@ -58,9 +62,10 @@ const createCustomer = async (req, res) => {
 
 const updateCustomer = async (req, res) => {
     try {
+        const dbConnection = db.getDBConnection();
         const id = req.params.id;
         const {name, email, phone, address} = req.body;
-        const customer = await customersModel.updateCustomer(id, {name, email, phone, address});
+        const customer = await customersModel.updateCustomer(id, {name, email, phone, address}, dbConnection);
         if (customer) {
             res.status(200).json({
                 status: 'success',
@@ -70,8 +75,8 @@ const updateCustomer = async (req, res) => {
         } else {
             res.status(404).json({ 
             status: 'fail',
-            message: error.message
-         });
+            message: `Can not find Id: ${id}`,
+        });
         }
     } catch (error) {
         console.error(error);
@@ -84,11 +89,12 @@ const updateCustomer = async (req, res) => {
 
 const deleteCustomer = async (req, res) => {
     try {
+        const dbConnection = db.getDBConnection();
         const id = parseInt(req.params.id);
-        const customer = await customersModel.getCustomerById(id);
+        const customer = await customersModel.getCustomerById(id, dbConnection);
         if (customer) {
             // delete customer
-            await customersModel.deleteCustomer(id);
+            await customersModel.deleteCustomer(id, dbConnection);
             res.status(200).json({
                 status: 'success',
                 message: 'Customer deleted successfully'
@@ -96,8 +102,8 @@ const deleteCustomer = async (req, res) => {
    } else {
             res.status(404).json({ 
             status: 'fail',
-            message: error.message
-         });
+            message: `Can not find Id: ${id}`,
+        });
         };
         
     } catch (error) {

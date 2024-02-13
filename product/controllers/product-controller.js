@@ -1,9 +1,13 @@
 // controllers/product-controller.js
+
+const db = require('../../db');
+
 module.exports = (productModel) => {
     // GET all products
     const getAllProducts = async (req, res) => {
         try {
-            const products = await productModel.getAllProducts();
+            const dbConnection = db.getDBConnection();
+            const products = await productModel.getAllProducts(dbConnection);
             res.status(200).json({
                 status: 'Success',
                 length: products.length,
@@ -18,8 +22,9 @@ module.exports = (productModel) => {
     // GET single product by ID
     const getProductById = async (req, res) => {
         try {
+            const dbConnection = db.getDBConnection();
             const id = req.params.id;
-            const product = await productModel.getProductById(id);
+            const product = await productModel.getProductById(id, dbConnection);
             if (product) {
                 res.status(200).json({
                     status: 'Success',
@@ -43,6 +48,7 @@ module.exports = (productModel) => {
     // POST new product
     const createProduct = async (req, res) => {
         try {
+            const dbConnection = db.getDBConnection();
             const {name, description, price} = req.body;
 
             if(!name || !description|| !price){
@@ -51,7 +57,7 @@ module.exports = (productModel) => {
                     message: 'Please add all the fields'
                 })
             } else {
-            const product = await productModel.createProduct({name, description, price});
+            const product = await productModel.createProduct({name, description, price}, dbConnection);
             res.status(201).json({
                 status: 'Product created successfully',
                 data: product
@@ -69,9 +75,10 @@ module.exports = (productModel) => {
     // PUT update existing product
     const updateProduct = async (req, res) => {
         try {
+            const dbConnection = db.getDBConnection();
             const id = req.params.id;
             const {name, description, price} = req.body;
-            const product = await productModel.updateProduct(id, {name, description, price});
+            const product = await productModel.updateProduct(id, {name, description, price}, dbConnection);
             if (product) {
                 res.status(201).json({
                     status: 'Product updated successfully',
@@ -95,11 +102,12 @@ module.exports = (productModel) => {
     // DELETE product
     const deleteProduct = async (req, res) => {
         try {
+            const dbConnection = db.getDBConnection();
             const id = req.params.id;
-            const product = await productModel.getProductById(id);
+            const product = await productModel.getProductById(id, dbConnection);
             if (product) {
                // delete product
-            await productModel.deleteProduct(id);
+            await productModel.deleteProduct(id, dbConnection);
             res.status(200).json({
                 status: 'Product deleted successfully',
             });

@@ -1,8 +1,10 @@
 const paypalService = require('../services/paymentService');
+const db = require('../../db');
 
 const getAllPayments = async (req, res) => {
     try {
-        const payments = await paypalService.getPaymentDetailsService();
+        const dbConnection = db.getDBConnection();
+        const payments = await paypalService.getPaymentDetailsService(dbConnection);
         res.status(200).json({
             status: 'Success',
             length: payments.length,
@@ -19,8 +21,9 @@ const getAllPayments = async (req, res) => {
 };
 const getPaymentById = async (req, res) => {
     try {
+        const dbConnection = db.getDBConnection();
         const paymentId = req.params.paymentId;
-        const payments = await paypalService.getPaymentByIdService(paymentId);
+        const payments = await paypalService.getPaymentByIdService(paymentId, dbConnection);
         res.status(200).json({
             status: 'Success',
             data: payments
@@ -36,6 +39,7 @@ const getPaymentById = async (req, res) => {
 };
 
 const createPayment = async (req, res) => {
+    const dbConnection = db.getDBConnection();
     const payment = {
         "intent": "authorize",
         "payer": {
@@ -62,7 +66,7 @@ const createPayment = async (req, res) => {
         }]
     };
     try {
-         const storedPayment = await paypalService.createPaypalPaymentService(payment);
+         const storedPayment = await paypalService.createPaypalPaymentService(payment, dbConnection);
          res.status(200).json({
             status: 'Success',
             data: storedPayment

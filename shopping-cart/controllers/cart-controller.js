@@ -1,10 +1,12 @@
 const cartModel = require('../models/cartModel');
 const productModel = require('../../product/models/productModel');
 const customerModel = require('../../customer/models/customerModel');
+const db = require('../../db');
 
 const getAllCarts = async (req, res) => {
     try {
-        const carts = await cartModel.getAllCarts();
+        const dbConnection = db.getDBConnection();
+        const carts = await cartModel.getAllCarts(dbConnection);
         res.status(200).json({
             message: "Carts retrieved successfully",
             length: carts.length,
@@ -21,8 +23,9 @@ const getAllCarts = async (req, res) => {
 
 const getCartById = async (req, res) => {
     try {
+        const dbConnection = db.getDBConnection();
         const id = parseInt(req.params.id);
-        const cart = await cartModel.getCartById(id);
+        const cart = await cartModel.getCartById(id, dbConnection);
         if (cart) {
             res.status(200).json({
                 message: "Cart retrieved successfully",
@@ -45,10 +48,11 @@ const getCartById = async (req, res) => {
 
 const createCart = async (req, res) => {
     try {
+        const dbConnection = db.getDBConnection();
         const {customerId, productId, quantity} = req.body;
 
-        const Customer = await customerModel.getCustomerById(customerId);
-    const Product = await productModel.getProductById(productId);
+        const Customer = await customerModel.getCustomerById(customerId, dbConnection);
+    const Product = await productModel.getProductById(productId, dbConnection);
     if (!Product) {
         res.status(404).json({
             status: "fail",
@@ -64,7 +68,7 @@ const createCart = async (req, res) => {
             customer_id: customerId,
             product_id: productId,
             quantity
-        });
+        }, dbConnection);
         res.status(201).json({
             message: "Cart created successfully",
             data: cart
@@ -81,13 +85,14 @@ const createCart = async (req, res) => {
 
 const updateCart = async (req, res) => {
     try {
+        const dbConnection = db.getDBConnection();
         const id = parseInt(req.params.id);
         const {customerId, productId, quantity} = req.body;
         const cart = await cartModel.updateCart(id, {
             customer_id: customerId,
             product_id: productId,
             quantity
-        });
+        }, dbConnection);
         if (cart) {
             res.status(200).json({
                 message: "Cart retrieved successfully",
@@ -110,11 +115,12 @@ const updateCart = async (req, res) => {
 
 const deleteCart = async (req, res) => {
     try {
+        const dbConnection = db.getDBConnection();
         const {id} = req.params;
-        const cart = await cartModel.getCartById(id);
+        const cart = await cartModel.getCartById(id, dbConnection);
         if (cart) {
             // delete the cart
-            await cartModel.deleteCart(id);
+            await cartModel.deleteCart(id, dbConnection);
             res.status(200).json({
                 message: "Cart deleted successfully"
             });
