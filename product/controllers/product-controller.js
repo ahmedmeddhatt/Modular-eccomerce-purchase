@@ -6,10 +6,10 @@ module.exports = (productModel) => {
     // GET all products
     const getAllProducts = async (req, res) => {
         try {
-            const dbConnection = db.getDBConnection();
+            const dbConnection = await db.getDBConnection();
             const products = await productModel.getAllProducts(dbConnection);
             res.status(200).json({
-                status: 'Success',
+                status: 'success',
                 length: products.length,
                 data: products
             });
@@ -22,7 +22,7 @@ module.exports = (productModel) => {
     // GET single product by ID
     const getProductById = async (req, res) => {
         try {
-            const dbConnection = db.getDBConnection();
+            const dbConnection = await db.getDBConnection();
             const id = req.params.id;
             const product = await productModel.getProductById(id, dbConnection);
             if (product) {
@@ -48,7 +48,7 @@ module.exports = (productModel) => {
     // POST new product
     const createProduct = async (req, res) => {
         try {
-            const dbConnection = db.getDBConnection();
+            const dbConnection = await db.getDBConnection();
             const {name, description, price} = req.body;
 
             if(!name || !description|| !price){
@@ -75,7 +75,7 @@ module.exports = (productModel) => {
     // PUT update existing product
     const updateProduct = async (req, res) => {
         try {
-            const dbConnection = db.getDBConnection();
+            const dbConnection = await db.getDBConnection();
             const id = req.params.id;
             const {name, description, price} = req.body;
             const product = await productModel.updateProduct(id, {name, description, price}, dbConnection);
@@ -102,13 +102,13 @@ module.exports = (productModel) => {
     // DELETE product
     const deleteProduct = async (req, res) => {
         try {
-            const dbConnection = db.getDBConnection();
+            const dbConnection = await db.getDBConnection();
             const id = req.params.id;
             const product = await productModel.getProductById(id, dbConnection);
             if (product) {
                // delete product
             await productModel.deleteProduct(id, dbConnection);
-            res.status(200).json({
+            res.status(204).json({
                 status: 'Product deleted successfully',
             });
             } else {

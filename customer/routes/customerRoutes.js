@@ -1,14 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const cartController = require('../controllers/customerController');
-const db = require('../../db');
 
 
 router.route('/')
     .get(async (req, res) => {
         try {
-            const dbConnection = db.getDBConnection();
-            await cartController.getAllCustomers(req, res, dbConnection);
+            await cartController.getAllCustomers(req, res, req.dbConnection);
         } catch (error){
             console.error(error);
         res.status(500).json({
@@ -19,8 +17,7 @@ router.route('/')
     })
     .post(async (req, res) => {
         try {
-            const dbConnection = db.getDBConnection();
-            await cartController.createCustomer(req, res, dbConnection);
+            await cartController.createCustomer(req, res, req.dbConnection);
         } catch (error) {
             console.error(error);
         res.status(500).json({
@@ -34,8 +31,7 @@ router.route('/')
 router.route('/:id')
     .get( async (req, res) => {
         try {
-            const dbConnection = db.getDBConnection();
-            await cartController.getCustomerById(req, res, dbConnection);
+            await cartController.getCustomerById(req, res, req.dbConnection);
         } catch (error) {
             console.error(error);
         res.status(500).json({
@@ -46,8 +42,7 @@ router.route('/:id')
     })
     .put( async (req, res) => {
         try {
-            const dbConnection = db.getDBConnection();
-            await cartController.updateCustomer(req, res, dbConnection);
+            await cartController.updateCustomer(req, res, req.dbConnection);
         } catch (error) {
             console.error(error);
         res.status(500).json({
@@ -58,8 +53,7 @@ router.route('/:id')
     })
     .delete( async (req, res) => {
         try {
-            const dbConnection = db.getDBConnection();
-            await cartController.deleteCustomer(req, res, dbConnection);
+            await cartController.deleteCustomer(req, res, req.dbConnection);
         } catch (error) {
             console.error(error);
         res.status(500).json({

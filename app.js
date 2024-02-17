@@ -12,7 +12,7 @@ app.use(express.json());
 const customersRoutes = require('./customer/routes/customerRoutes');
 const productRoutes = require('./product/routes/product-routes');
 const carrtRoutes = require('./shopping-cart/routes/cart-routes');
-const ordersRoutes = require('./order-management/routes/order-route');
+const ordersRoutes = require('./orders/routes/order-route');
 const paymentRoutes = require('./payment/routes/payment-route');
 const paypalService = require('./payment/services/paymentService');
 
@@ -74,6 +74,10 @@ app.get('/error', (req,res) => {
         next();
     }, paymentRoutes);
 
+
+    app.use('/', (req, res, next) =>{
+        res.send('Welcome')
+    });
 const port = process.env.PORT || 3000;
 
 // Start server

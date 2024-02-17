@@ -1,6 +1,5 @@
 const paypal = require('paypal-rest-sdk');
 require('dotenv').config();
-const db = require('../../db')
 
 
 paypal.configure({
@@ -33,13 +32,12 @@ exports.getPaymentByIdService = async (paymentId, dbConnection) => {
 };
 
 exports.createPaypalPaymentService = async (payment) => {
-    return new Promise((resolve, reject) => {
-        paypal.payment.create( payment, async function (err, createdPayment) {
+    return new Promise((resolve, reject)  => {
+          paypal.payment.create( payment, async function (err, createdPayment) {
             if (err) {
-                reject(err);;
+                reject(err);
             } else {
-                const storedPayment = await exports.storePaymentInDatabase(createdPayment);
-                resolve(storedPayment);
+                resolve(createdPayment);
             }
         });
      
@@ -47,8 +45,8 @@ exports.createPaypalPaymentService = async (payment) => {
     
 };
 
-
-exports.storePaymentInDatabase  = async (payment, dbConnection) => {
+exports.storePaymentInDatabase  = async (payment, paymentDetails, dbConnection) => {
+    const { payment_method, name, price, currency, quantity, description } = paymentDetails;
     const query = `
             INSERT INTO payment (id, intent, state, payment_method, name, price,
              currency, quantity, description, create_time, links)
@@ -60,18 +58,22 @@ exports.storePaymentInDatabase  = async (payment, dbConnection) => {
         payment.id,
         payment.intent,
         payment.state,
-        payment.payer.payment_method,
-        payment.transactions[0].item_list.items[0].name,
-        payment.transactions[0].item_list.items[0].price,
-        payment.transactions[0].item_list.items[0].currency,
-        payment.transactions[0].item_list.items[0].quantity,
-        payment.transactions[0].description,
+        payment_method, 
+        name, 
+        price, 
+        currency, 
+        quantity, 
+        description,
         new Date(payment.create_time),
         JSON.stringify(payment.links),
 
     ];
-
-    const {rows} = await dbConnection.query(query, values);
-    return rows[0];
+    try {
+        const { rows } = await dbConnection.query(query, values);
+        return rows[0];
+    } catch (error) {
+        console.error(error);
+        throw error; 
+    }
   
 };

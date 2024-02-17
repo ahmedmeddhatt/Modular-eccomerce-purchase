@@ -5,10 +5,10 @@ const db = require('../../db');
 
 const getAllOrders = async (req, res) => {
     try {
-        const dbConnection = db.getDBConnection();
+        const dbConnection = await db.getDBConnection();
         const orders = await orderModel.getAllOrders(dbConnection);
         res.status(200).json({
-            message: "Orders retrieved successfully",
+            message: "success",
             length: orders.length,
             data: orders
         });
@@ -24,11 +24,11 @@ const getAllOrders = async (req, res) => {
 const getOrderById = async (req, res) => {
     const { id } = req.params;
     try {
-        const dbConnection = db.getDBConnection();
+        const dbConnection = await db.getDBConnection();
         const order = await orderModel.getOrderById(id, dbConnection);
         if (order) {
             res.status(200).json({
-                message: "Order retrieved successfully",
+                status: "success",
                 data: order
             });
         } else {
@@ -47,7 +47,7 @@ const getOrderById = async (req, res) => {
 };
 
 const createOrder = async (req, res) => {
-    const dbConnection = db.getDBConnection();
+    const dbConnection = await db.getDBConnection();
     const {customerId, productId, quantity, totalAmount, orderStatus } = req.body;
     try {
         console.log(productId);
@@ -96,15 +96,22 @@ const createOrder = async (req, res) => {
 
 
 const updateOrder = async (req, res) => {
-    const dbConnection = db.getDBConnection();
+    const dbConnection = await db.getDBConnection();
     const { id } = req.params;
-    const {customerId, productId, quantity, totalAmout, orderStatus} = req.body;
+    const {customerId, productId, quantity, totalAmount, orderStatus} = req.body;
     try {
         const order = await 
-        orderModel.updateOrder(id, {customerId, productId, quantity, totalAmout, orderStatus}, dbConnection);
+        orderModel.updateOrder(id, {
+            customer_id: customerId,
+            product_id: productId,
+            quantity,
+            total_amount: totalAmount,
+            order_status: orderStatus
+        }, dbConnection);
         if (order) {
-            res.status(200).json({
-                message: "Order retrieved successfully",
+            res.status(201).json({
+                status: 'success',
+                message: "Order updated successfully",
                 data: order
             });
         } else {
@@ -123,7 +130,7 @@ const updateOrder = async (req, res) => {
 };
 
 const deleteOrder = async (req, res) => {
-    const dbConnection = db.getDBConnection();
+    const dbConnection = await db.getDBConnection();
     const { id } = req.params;
     try {
 
@@ -131,7 +138,7 @@ const deleteOrder = async (req, res) => {
         if (order) {
             // delete order
             await orderModel.deleteOrder(id, dbConnection);
-            res.status(200).json({
+            res.status(204).json({
                 message: "Order deleted successfully"
             });
         } else {

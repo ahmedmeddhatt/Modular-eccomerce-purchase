@@ -1,6 +1,5 @@
 const express = require('express');
 const payment = require('../controllers/payment-controller');
-const db = require('../../db');
 
 const router = express.Router();
 
@@ -8,8 +7,7 @@ const router = express.Router();
 router.route('/payment-details/')
     .get(async (req, res) => {
         try {
-            const dbConnection = db.getDBConnection();
-            await payment.getAllPayments(req, res, dbConnection);
+            await payment.getAllPayments(req, res, req.dbConnection);
         } catch (error){
             console.error(error);
         res.status(500).json({
@@ -23,8 +21,7 @@ router.route('/payment-details/')
 router.route('/payment-details/:paymentId')
     .get(async (req, res) => {
         try {
-            const dbConnection = db.getDBConnection();
-            await payment.getPaymentById(req, res, dbConnection);
+            await payment.getPaymentById(req, res, req.dbConnection);
         } catch (error){
             console.error(error);
         res.status(500).json({
@@ -36,10 +33,9 @@ router.route('/payment-details/:paymentId')
 
     
 router.route('/buy')
-    .get(async (req, res) => {
+    .post(async (req, res) => {
         try {
-            const dbConnection = db.getDBConnection();
-            await payment.createPayment(req, res, dbConnection);
+            await payment.createPayment(req, res, req.dbConnection);
         } catch (error){
             console.error(error);
         res.status(500).json({
