@@ -5,7 +5,7 @@ const db = require('../../db');
 
 const getAllCarts = async (req, res) => {
     try {
-        const dbConnection = db.getDBConnection();
+        const dbConnection = await db.getDBConnection();
         const carts = await cartModel.getAllCarts(dbConnection);
         res.status(200).json({
             message: "Carts retrieved successfully",
@@ -23,7 +23,7 @@ const getAllCarts = async (req, res) => {
 
 const getCartById = async (req, res) => {
     try {
-        const dbConnection = db.getDBConnection();
+        const dbConnection = await db.getDBConnection();
         const id = parseInt(req.params.id);
         const cart = await cartModel.getCartById(id, dbConnection);
         if (cart) {
@@ -48,11 +48,11 @@ const getCartById = async (req, res) => {
 
 const createCart = async (req, res) => {
     try {
-        const dbConnection = db.getDBConnection();
+        const dbConnection = await db.getDBConnection();
         const {customerId, productId, quantity} = req.body;
 
         const Customer = await customerModel.getCustomerById(customerId, dbConnection);
-    const Product = await productModel.getProductById(productId, dbConnection);
+        const Product = await productModel.getProductById(productId, dbConnection);
     if (!Product) {
         res.status(404).json({
             status: "fail",
@@ -85,7 +85,7 @@ const createCart = async (req, res) => {
 
 const updateCart = async (req, res) => {
     try {
-        const dbConnection = db.getDBConnection();
+        const dbConnection = await db.getDBConnection();
         const id = parseInt(req.params.id);
         const {customerId, productId, quantity} = req.body;
         const cart = await cartModel.updateCart(id, {
@@ -94,7 +94,7 @@ const updateCart = async (req, res) => {
             quantity
         }, dbConnection);
         if (cart) {
-            res.status(200).json({
+            res.status(201).json({
                 message: "Cart retrieved successfully",
                 data: cart
             });
@@ -115,13 +115,13 @@ const updateCart = async (req, res) => {
 
 const deleteCart = async (req, res) => {
     try {
-        const dbConnection = db.getDBConnection();
+        const dbConnection = await db.getDBConnection();
         const {id} = req.params;
         const cart = await cartModel.getCartById(id, dbConnection);
         if (cart) {
             // delete the cart
             await cartModel.deleteCart(id, dbConnection);
-            res.status(200).json({
+            res.status(204).json({
                 message: "Cart deleted successfully"
             });
         } else {

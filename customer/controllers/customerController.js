@@ -3,9 +3,13 @@ const db = require('../../db');
 
 const getAllCustomers = async (req, res) => {
     try {
-        const dbConnection = db.getDBConnection();
+        const dbConnection = await db.getDBConnection();
         const customers = await customersModel.getAllCustomers(dbConnection);
-        res.status(200).json(customers);
+        res.status(200).json({
+            status: 'success',
+            length: customers.length,
+            data: customers
+        });
     } catch (error) {
         console.error(error);
         res.status(500).json({ 
@@ -18,13 +22,12 @@ const getAllCustomers = async (req, res) => {
 const getCustomerById = async (req, res) => {
     try {
         const id = req.params.id;
-        const dbConnection = db.getDBConnection();
-        const customers = await customersModel.getCustomerById(id, dbConnection);
-        if (customers) {
+        const dbConnection = await db.getDBConnection();
+        const customer = await customersModel.getCustomerById(id, dbConnection);
+        if (customer) {
             res.status(200).json({
                 status: 'success',
-                length: customers.length,
-                data: customers
+                data: customer
             });
         } else {
             res.status(404).json({ 
@@ -43,7 +46,7 @@ const getCustomerById = async (req, res) => {
 
 const createCustomer = async (req, res) => {
     try {
-        const dbConnection = db.getDBConnection();
+        const dbConnection = await db.getDBConnection();
         const {name, email, phone, address} = req.body;
         const customer = await customersModel.createCustomer({name, email, phone, address}, dbConnection);
         res.status(201).json({
@@ -62,12 +65,12 @@ const createCustomer = async (req, res) => {
 
 const updateCustomer = async (req, res) => {
     try {
-        const dbConnection = db.getDBConnection();
+        const dbConnection = await db.getDBConnection();
         const id = req.params.id;
         const {name, email, phone, address} = req.body;
         const customer = await customersModel.updateCustomer(id, {name, email, phone, address}, dbConnection);
         if (customer) {
-            res.status(200).json({
+            res.status(201).json({
                 status: 'success',
                 message: 'Customer updated successfully',
                 data: customer
@@ -89,13 +92,13 @@ const updateCustomer = async (req, res) => {
 
 const deleteCustomer = async (req, res) => {
     try {
-        const dbConnection = db.getDBConnection();
+        const dbConnection = await db.getDBConnection();
         const id = parseInt(req.params.id);
         const customer = await customersModel.getCustomerById(id, dbConnection);
         if (customer) {
             // delete customer
             await customersModel.deleteCustomer(id, dbConnection);
-            res.status(200).json({
+            res.status(204).json({
                 status: 'success',
                 message: 'Customer deleted successfully'
             });

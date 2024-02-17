@@ -5,14 +5,12 @@ const createProductController = require('../controllers/product-controller');
 
 const productModel = require('../models/productModel');
 const productController = createProductController(productModel);
-const db = require('../../db');
 
 
     router.route('/')
     .get(async (req, res) => {
         try {
-            const dbConnection = db.getDBConnection();
-            await productController.getAllProducts(req, res, dbConnection);
+            await productController.getAllProducts(req, res, req.dbConnection);
         } catch (error){
             console.error(error);
         res.status(500).json({
@@ -23,8 +21,7 @@ const db = require('../../db');
     })
     .post(async (req, res) => {
         try {
-            const dbConnection = db.getDBConnection();
-            await productController.createProduct(req, res, dbConnection);
+            await productController.createProduct(req, res, req.dbConnection);
         } catch (error) {
             console.error(error);
         res.status(500).json({
@@ -38,8 +35,7 @@ const db = require('../../db');
 router.route('/:id')
     .get( async (req, res) => {
         try {
-            const dbConnection = db.getDBConnection();
-            await productController.getProductById(req, res, dbConnection);
+            await productController.getProductById(req, res, req.dbConnection);
         } catch (error) {
             console.error(error);
         res.status(500).json({
@@ -50,8 +46,7 @@ router.route('/:id')
     })
     .put( async (req, res) => {
         try {
-            const dbConnection = db.getDBConnection();
-            await productController.updateProduct(req, res, dbConnection);
+            await productController.updateProduct(req, res, req.dbConnection);
         } catch (error) {
             console.error(error);
         res.status(500).json({
@@ -62,8 +57,7 @@ router.route('/:id')
     })
     .delete( async (req, res) => {
         try {
-            const dbConnection = db.getDBConnection();
-            await productController.deleteProduct(req, res, dbConnection);
+            await productController.deleteProduct(req, res, req.dbConnection);
         } catch (error) {
             console.error(error);
         res.status(500).json({

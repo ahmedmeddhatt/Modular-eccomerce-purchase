@@ -3,7 +3,7 @@ const db = require('../../db');
 
 const getAllPayments = async (req, res) => {
     try {
-        const dbConnection = db.getDBConnection();
+        const dbConnection = await db.getDBConnection();
         const payments = await paypalService.getPaymentDetailsService(dbConnection);
         res.status(200).json({
             status: 'Success',
@@ -21,13 +21,20 @@ const getAllPayments = async (req, res) => {
 };
 const getPaymentById = async (req, res) => {
     try {
-        const dbConnection = db.getDBConnection();
+        const dbConnection = await db.getDBConnection();
         const paymentId = req.params.paymentId;
-        const payments = await paypalService.getPaymentByIdService(paymentId, dbConnection);
-        res.status(200).json({
-            status: 'Success',
-            data: payments
-        })
+        const payment = await paypalService.getPaymentByIdService(paymentId, dbConnection);
+        if(payment){
+            res.status(200).json({
+                status: 'success',
+                data: payment
+            })
+        } else {
+            res.status(404).json({
+                status: 'Fail',
+                message: 'Payment not found!'
+            })
+        }
     } catch (err) {
         console.log(err);
         res.status(500).json({
@@ -38,8 +45,10 @@ const getPaymentById = async (req, res) => {
     
 };
 
+
+
 const createPayment = async (req, res) => {
-    const dbConnection = db.getDBConnection();
+    const dbConnection = await db.getDBConnection();
     const payment = {
         "intent": "authorize",
         "payer": {
@@ -65,16 +74,33 @@ const createPayment = async (req, res) => {
             "description": "Financial Book"
         }]
     };
+
     try {
-         const storedPayment = await paypalService.createPaypalPaymentService(payment, dbConnection);
-         res.status(200).json({
-            status: 'Success',
+        const additionalFields = {
+            payment_method: req.body.payment_method,
+            name: req.body.name,
+            price: req.body.price,
+            currency: req.body.currency,
+            quantity: req.body.quantity,
+            description: req.body.description,
+        };
+
+        const paypalPayment = await paypalService.createPaypalPaymentService(payment, dbConnection);
+
+        const storedPayment = await paypalService.storePaymentInDatabase(
+            paypalPayment,
+            additionalFields,
+            dbConnection
+        );
+
+        res.status(200).json({
+            status: 'success',
             data: storedPayment
         });
-     } catch (err) {
+    } catch (err) {
         console.log(err);
         res.redirect('/error');
-     }
+    }
 };
 
 

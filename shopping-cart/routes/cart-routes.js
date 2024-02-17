@@ -1,15 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const cartController = require('../controllers/cart-controller');
-const db = require('../../db');
-
 
 
 router.route('/')
 .get(async (req, res) => {
     try {
-        const dbConnection = db.getDBConnection();
-        await cartController.getAllCarts(req, res, dbConnection);
+        await cartController.getAllCarts(req, res, req.dbConnection);
     } catch (error){
         console.error(error);
     res.status(500).json({
@@ -20,8 +17,7 @@ router.route('/')
 })
 .post(async (req, res) => {
     try {
-        const dbConnection = db.getDBConnection();
-        await cartController.createCart(req, res, dbConnection);
+        await cartController.createCart(req, res, req.dbConnection);
     } catch (error) {
         console.error(error);
     res.status(500).json({
@@ -35,8 +31,7 @@ router.route('/')
 router.route('/:id')
 .get( async (req, res) => {
     try {
-        const dbConnection = db.getDBConnection();
-        await cartController.getCartById(req, res, dbConnection);
+        await cartController.getCartById(req, res, req.dbConnection);
     } catch (error) {
         console.error(error);
     res.status(500).json({
@@ -47,8 +42,7 @@ router.route('/:id')
 })
 .put( async (req, res) => {
     try {
-        const dbConnection = db.getDBConnection();
-        await cartController.updateCart(req, res, dbConnection);
+        await cartController.updateCart(req, res, req.dbConnection);
     } catch (error) {
         console.error(error);
     res.status(500).json({
@@ -59,8 +53,7 @@ router.route('/:id')
 })
 .delete( async (req, res) => {
     try {
-        const dbConnection = db.getDBConnection();
-        await cartController.deleteCart(req, res, dbConnection);
+        await cartController.deleteCart(req, res, req.dbConnection);
     } catch (error) {
         console.error(error);
     res.status(500).json({

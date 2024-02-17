@@ -1,14 +1,12 @@
 const express = require('express');
 const orderController = require('../controllers/order-controller');
-const db = require('../../db');
 
 const router = express.Router();
 
 router.route('/')
     .get(async (req, res) => {
         try {
-            const dbConnection = db.getDBConnection();
-            await orderController.getAllOrders(req, res, dbConnection);
+            await orderController.getAllOrders(req, res, req.dbConnection);
         } catch (error){
             console.error(error);
         res.status(500).json({
@@ -19,8 +17,7 @@ router.route('/')
     })
     .post(async (req, res) => {
         try {
-            const dbConnection = db.getDBConnection();
-            await orderController.createOrder(req, res, dbConnection);
+            await orderController.createOrder(req, res, req.dbConnection);
         } catch (error) {
             console.error(error);
         res.status(500).json({
@@ -34,8 +31,7 @@ router.route('/')
 router.route('/:id')
     .get( async (req, res) => {
         try {
-            const dbConnection = db.getDBConnection();
-            await orderController.getOrderById(req, res, dbConnection);
+            await orderController.getOrderById(req, res, req.dbConnection);
         } catch (error) {
             console.error(error);
         res.status(500).json({
@@ -46,8 +42,7 @@ router.route('/:id')
     })
     .put( async (req, res) => {
         try {
-            const dbConnection = db.getDBConnection();
-            await orderController.updateOrder(req, res, dbConnection);
+            await orderController.updateOrder(req, res, req.dbConnection);
         } catch (error) {
             console.error(error);
         res.status(500).json({
@@ -58,8 +53,7 @@ router.route('/:id')
     })
     .delete( async (req, res) => {
         try {
-            const dbConnection = db.getDBConnection();
-            await orderController.deleteOrder(req, res, dbConnection);
+            await orderController.deleteOrder(req, res, req.dbConnection);
         } catch (error) {
             console.error(error);
         res.status(500).json({
