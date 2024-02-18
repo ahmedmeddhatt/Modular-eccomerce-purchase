@@ -6,21 +6,17 @@
   "scripts": {
     "start": "nodemon app.js"
   },
-  "keywords": [],
-  "author": "",
+  "author": "Ahmed Medhat",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
     "dotenv": "^16.4.1",
     "express": "^4.18.2",
-    "jsonwebtoken": "^9.0.2",
     "paypal-rest-sdk": "^1.8.1",
     "pg": "^8.11.3"
   },
   "devDependencies": {
     "cypress": "^13.6.4",
-    "nodemon": "^3.0.3",
-    "sqlite3": "^5.1.7"
+    "nodemon": "^3.0.3"
   }
 }

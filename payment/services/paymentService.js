@@ -19,6 +19,7 @@ exports.getPaymentDetailsService = async (dbConnection) => {
      return rows;
   
 };
+
 exports.getPaymentByIdService = async (paymentId, dbConnection) => {
 
     const query = `

@@ -6,7 +6,7 @@ const getAllPayments = async (req, res) => {
         const dbConnection = await db.getDBConnection();
         const payments = await paypalService.getPaymentDetailsService(dbConnection);
         res.status(200).json({
-            status: 'Success',
+            status: 'success',
             length: payments.length,
             data: payments
         })
@@ -44,8 +44,6 @@ const getPaymentById = async (req, res) => {
     
     
 };
-
-
 
 const createPayment = async (req, res) => {
     const dbConnection = await db.getDBConnection();
@@ -92,7 +90,6 @@ const createPayment = async (req, res) => {
             additionalFields,
             dbConnection
         );
-            // console.log(storedPayment.id);
         res.status(201).json({
             status: 'success',
             data: storedPayment
