@@ -92,8 +92,8 @@ const createPayment = async (req, res) => {
             additionalFields,
             dbConnection
         );
-
-        res.status(200).json({
+            // console.log(storedPayment.id);
+        res.status(201).json({
             status: 'success',
             data: storedPayment
         });

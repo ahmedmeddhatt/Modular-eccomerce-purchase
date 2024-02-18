@@ -50,7 +50,6 @@ const createOrder = async (req, res) => {
     const dbConnection = await db.getDBConnection();
     const {customerId, productId, quantity, totalAmount, orderStatus } = req.body;
     try {
-        console.log(productId);
     const Customer = await customerModel.getCustomerById(customerId, dbConnection);
     const Product = await productModel.getProductById(productId, dbConnection);
     if (!Product) {

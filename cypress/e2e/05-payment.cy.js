@@ -7,8 +7,8 @@ describe('Payment Module End-to-End Test', () => {
     cy.request('/');
   });
 
-  it('should test Customer module', () => {
-    // Testing GET all customers
+  it('should test Payment module', () => {
+    // Testing GET all payments
     cy.request(`/api/payment/payment-details`).then((response) => {
       // Check if the response has data (an array with length above 0)
       if (response.body && Array.isArray(response.body) && response.body.length > 0) {
@@ -19,39 +19,52 @@ describe('Payment Module End-to-End Test', () => {
     }
     });
 
-    // Testing POST new customer
-    const newCustomer = {
-      name: 'John Doe',
-      email: 'john@example.com',
-      phone: '01024186652',
-      address: 'Zahraa nasr city',
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
+    // Testing POST new payment
+    const newPayment = {
+      payment_method: "Master-Card",
+      name: "Onion",
+      price: "3.99",
+      currency: "EUR",
+      quantity:  12,
+      description: "Vegetables",
     };
-
-    cy.request('POST', `/api/customers`, newCustomer).then((postResponse) => {
-      expect(postResponse.status).to.eq(201);
-      // const realCreatedAt = new Date(postResponse.body.data.created_at).toISOString();
-      // const realUpdatedAt = new Date(postResponse.body.data.updated_at).toISOString();
-      const expectedData = {
-        status: 'success',
-        message: 'Customer created successfully',
-        data: {
-          id: postResponse.body.data.id,
-          name: newCustomer.name,
-          email: newCustomer.email,
-          phone: newCustomer.phone,
-          address: newCustomer.address,
-          created_at: new Date(postResponse.body.data.created_at).toISOString(),
-          updated_at: new Date(postResponse.body.data.updated_at).toISOString()
-        }
-      };
-      expect(postResponse.body.data).to.deep.equal(expectedData.data);
-
-      // Storing the dynamically generated customer id
+    
+    cy.request('POST', `/api/payment/buy`, newPayment).then((postResponse) => {
+      // Storing the dynamically generated payment id
       paymentId = postResponse.body.data.id;
 
-      // Testing GET single customer
+      expect(postResponse.status).to.eq(201);
+      
+      const expectedData = {
+        status: 'success',
+        data: {
+          payment_method: newPayment.payment_method,
+          name: newPayment.name,
+          price: newPayment.price,
+          currency: newPayment.currency,
+          quantity:  newPayment.quantity,
+          description: newPayment.description,
+          
+        }
+      };
+
+      // retrieve the rest of the data
+      cy.request('GET', `/api/payment/payment-details/${paymentId}`).then((postResponse) => {
+        expectedData.data.id = postResponse.body.data.id;
+        expectedData.data.intent = postResponse.body.data.intent
+        expectedData.data.state = postResponse.body.data.state;
+        expectedData.data.create_time = postResponse.body.data.create_time;
+        expectedData.data.links = postResponse.body.data.links;
+
+      });
+
+      cy.wrap(null).then(() => {
+
+        expect(postResponse.body.data).to.deep.equal(expectedData.data);
+      });
+
+      cy.log(postResponse.body);
+      // Testing GET single payment
       cy.request(`/api/payment/payment-details/${paymentId}`).then((getResponse) => {
         expect(getResponse.status).to.eq(200);
         expect(getResponse.body).to.have.property('status', 'success');
