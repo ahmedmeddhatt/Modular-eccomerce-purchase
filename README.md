@@ -50,99 +50,163 @@ npm run start
 
 Visit [http://localhost:3000](http://localhost:3000) to interact with the app.
 
+Certainly! Below are the API endpoints formatted for your specified structure:
+
 ## API Endpoints
 
 ### Customers Module
 
-- `GET /api/customers`: Retrieve all customers.
-- `GET /api/customers/:id`: Retrieve a specific customer.
-- `POST /api/customers`: Create a new customer.
-{
-    "name": "ahmed",
-    "email": "ahmed@customer.com",
-    "phone": "01111138720",
-    "address": "Madenty"
-}
-- `PUT /api/customers/:id`: Update customer information.
-{
-    "name": "Mohamed",
-    "email": "Mohamed@customer.com",
-    "phone": "01111138720",
-    "address": "6 october"
-}
-- `DELETE /api/customers/:id`: Delete a customer.
+1. **GET /api/customers**
+   - Retrieve all customers.
+
+2. **GET /api/customers/:id**
+   - Retrieve a specific customer.
+
+3. **POST /api/customers**
+   - Create a new customer.
+   ```json
+   {
+       "name": "ahmed",
+       "email": "ahmed@customer.com",
+       "phone": "01111138720",
+       "address": "Madenty"
+   }
+   ```
+
+4. **PUT /api/customers/:id**
+   - Update customer information.
+   ```json
+   {
+       "name": "Mohamed",
+       "email": "Mohamed@customer.com",
+       "phone": "01111138720",
+       "address": "6 october"
+   }
+   ```
+
+5. **DELETE /api/customers/:id**
+   - Delete a customer.
 
 ### Products Module
 
-- `GET /api/products`: Retrieve all products.
-- `GET /api/products/:id`: Retrieve a specific product.
-- `POST /api/products`: Create a new product.
-{
-    "name": "tv smart 30",
-    "description": "new tv smart 30",
-    "price": 60
-}
-- `PUT /api/products/:id`: Update products information.
-{
-    "name": "tv smart 20",
-    "description": "new tv smart 20",
-    "price": 40
-}
-- `DELETE /api/products/:id`: Delete a product.
+6. **GET /api/products**
+   - Retrieve all products.
+
+7. **GET /api/products/:id**
+   - Retrieve a specific product.
+
+8. **POST /api/products**
+   - Create a new product.
+   ```json
+   {
+       "name": "tv smart 30",
+       "description": "new tv smart 30",
+       "price": 60
+   }
+   ```
+
+9. **PUT /api/products/:id**
+   - Update product information.
+   ```json
+   {
+       "name": "tv smart 20",
+       "description": "new tv smart 20",
+       "price": 40
+   }
+   ```
+
+10. **DELETE /api/products/:id**
+    - Delete a product.
 
 ### Shopping Cart Module
 
-- `GET /api/cart`: Retrieve all the cart.
-- `GET /api/cart/:orderId`: Retrieve the shopping cart for a specific order.
-- `POST /api/cart/`: Add a product to the shopping cart by adding the customerId & orderId.
-{
-    "customerId": 297,
-    "productId": 28,
-    "quantity": 10
-}
-- `PUT /api/cart/:id`: Update cart information.
-{
-    "customerId": 2,
-    "productId": 3,
-    "quantity": 10000
-}
-- `DELETE /api/cart/:id`: Delete the cart.
-- `POST /api/cart/:orderId/remove/:productId`: Remove a product from the shopping cart.
+11. **GET /api/cart**
+    - Retrieve all the cart.
+
+12. **GET /api/cart/:orderId**
+    - Retrieve the shopping cart for a specific order.
+
+13. **POST /api/cart/**
+    - Add a product to the shopping cart by adding the customerId & orderId.
+    ```json
+    {
+        "customerId": 297,
+        "productId": 28,
+        "quantity": 10
+    }
+    ```
+
+14. **PUT /api/cart/:id**
+    - Update cart information.
+    ```json
+    {
+        "customerId": 2,
+        "productId": 3,
+        "quantity": 10000
+    }
+    ```
+
+15. **DELETE /api/cart/:id**
+    - Delete the cart.
+
+16. **POST /api/cart/:orderId/remove/:productId**
+    - Remove a product from the shopping cart.
 
 ### Orders Module
 
-- `GET /api/orders`: Retrieve all orders.
-- `GET /api/orders/:id`: Retrieve a specific order.
-- `POST /api/orders`: Create a new order.
-{
-    "customerId": 301,
-    "productId": [40, 29, 42],
-    "quantity": 17,
-    "orderStatus": "created"
-}
-- `PUT /api/orders/:id`: Update order information.
-{
-    "customerId": 301,
-    "productId": [28, 41, 42],
-    "quantity": 20,
-    "orderStatus": "created"
-}
-- `DELETE /api/orders/:id`: Delete an order.
+17. **GET /api/orders**
+    - Retrieve all orders.
+
+18. **GET /api/orders/:id**
+    - Retrieve a specific order.
+
+19. **POST /api/orders**
+    - Create a new order.
+    ```json
+    {
+        "customerId": 301,
+        "productId": [40, 29, 42],
+        "quantity": 17,
+        "orderStatus": "created"
+    }
+    ```
+
+20. **PUT /api/orders/:id**
+    - Update order information.
+    ```json
+    {
+        "customerId": 301,
+        "productId": [28, 41, 42],
+        "quantity": 20,
+        "orderStatus": "created"
+    }
+    ```
+
+21. **DELETE /api/orders/:id**
+    - Delete an order.
 
 ### Payment Module
 
-- `GET /api/payment/payment-details`: Retrieve all the payments.
-- `GET /api/payment/payment-details/:paymentId`: Retrieve the payment, order, customer details for a specific transaction.
-- `POST /api/payment/buy`: Process payment for a specific order.
-{
+22. **GET /api/payment/payment-details**
+    - Retrieve all the payments.
+
+23. **GET /api/payment/payment-details/:paymentId**
+    - Retrieve the payment, order, customer details for a specific transaction.
+
+24. **POST /api/payment/buy**
+    - Process payment for a specific order.
+    ```json
+    {
         "payment_method": "Master-Card",
         "name": "Onion",
         "description": "Vegetables",
         "currency": "EUR",
         "price": "3.99",
         "quantity": 12
-}
+    }
+    ```
 
+Feel free to adjust any details or add more information based on your specific application needs.
 
 ## Testing
 
@@ -157,6 +221,7 @@ npx cypress open
 
 ## Project Structure
 
+```
 Modular E-commerce Purchase/
 |-- customer/
 |   |-- controllers
@@ -223,7 +288,7 @@ Modular E-commerce Purchase/
 |-- cypress.config.js
 |-- package.json
 |-- README.md
-
+```
 
 ## How to Run
 
