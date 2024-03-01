@@ -7,6 +7,7 @@ This Express app is designed to handle various e-commerce purchase components in
 ## Table of Contents
 
 - [Modules](#modules)
+- [Sequence Diagram](#Sequence-diagram)
 - [DB Diagram](#db-diagram)
 - [Installation](#installation)
 - [Usage](#usage)
@@ -29,8 +30,13 @@ This Express app is designed to handle various e-commerce purchase components in
 
 5. **Payment Module:** Manages payment processing for completed orders.
 
+
+## Sequence Diagram
+![Sequence Diagram](docs/sequence-diagram.jpg)
+
+
 ## DB Diagram
-![Database Diagram](docs/database_diagram.png)
+![Database Diagram](docs/db_diagram.png)
 
 
 ## Installation
