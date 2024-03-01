@@ -14,7 +14,6 @@ const productRoutes = require('./product/routes/product-routes');
 const carrtRoutes = require('./shopping-cart/routes/cart-routes');
 const ordersRoutes = require('./orders/routes/order-route');
 const paymentRoutes = require('./payment/routes/payment-route');
-const paypalService = require('./payment/services/paymentService');
 
 // payment page
 app.get('/payment', (req,res) => {
@@ -74,13 +73,15 @@ app.get('/error', (req,res) => {
         next();
     }, paymentRoutes);
 
-
+    // Default route
     app.use('/', (req, res, next) =>{
         res.send('Welcome')
     });
-const port = process.env.PORT || 3000;
 
-// Start server
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-});
+    // Port
+    const port = process.env.PORT || 3000;
+
+    // Start server
+    app.listen(port, () => {
+        console.log(`Server is running on port ${port}`);
+    });
