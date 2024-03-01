@@ -36,7 +36,7 @@ This Express app is designed to handle various e-commerce purchase components in
 
 
 ## DB Diagram
-![Database Diagram](docs/db_diagram.png)
+![Database Diagram](docs/db-diagram.png)
 
 
 ## Installation
