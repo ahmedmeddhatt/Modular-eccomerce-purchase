@@ -11,8 +11,10 @@ This Express app is designed to handle various e-commerce purchase components in
 - [Usage](#usage)
 - [API Endpoints](#api-endpoints)
 - [Testing](#testing)
+- [Project Structure](#Project-Structure)
+- [How To Run](#How-to-Run)
 - [Contributing](#contributing)
-- [License](#license)
+- [Author](#Author)
 
 ## Modules
 
