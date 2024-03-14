@@ -9,7 +9,7 @@ const db = require('./db');
 app.use(express.json());
 
 // Routes
-const customersRoutes = require('./customer/routes/customerRoutes');
+const usersRoutes = require('./user/routes/userRoutes');
 const productRoutes = require('./product/routes/product-routes');
 const carrtRoutes = require('./shopping-cart/routes/cart-routes');
 const ordersRoutes = require('./orders/routes/order-route');
@@ -48,10 +48,10 @@ app.get('/error', (req,res) => {
 });
 
 // Routes middleware
-    app.use('/api/customers', (req, res, next) =>{
+    app.use('/api/users', (req, res, next) =>{
         req.dbConnection = db.getDBConnection();
         next();
-    }, customersRoutes );
+    }, usersRoutes );
 
     app.use('/api/products', (req, res, next) =>{
         req.dbConnection = db.getDBConnection();

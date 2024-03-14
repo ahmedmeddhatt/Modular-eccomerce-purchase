@@ -2,7 +2,7 @@
 
 # Modular E-commerce Purchase Express App
 
-This Express app is designed to handle various e-commerce purchase components in a modular fashion. The app includes modules for managing customers, orders, shopping cart, products, and payments.
+This Express app is designed to handle various e-commerce purchase components in a modular fashion. The app includes modules for managing users, orders, shopping cart, products, and payments.
 
 ## Table of Contents
 
@@ -20,7 +20,7 @@ This Express app is designed to handle various e-commerce purchase components in
 
 ## Modules
 
-1. **Customers Module:** Manages customer-related operations such as creating, updating, and retrieving customer information.
+1. **Users Module:** Manages user-related operations such as creating, updating, and retrieving user information.
 
 2. **Products Module:** Handles product-related operations, such as listing available products.
 
@@ -67,38 +67,38 @@ Certainly! Below are the API endpoints formatted for your specified structure:
 
 ## API Endpoints
 
-### Customers Module
+### Users Module
 
-1. **GET /api/customers**
-   - Retrieve all customers.
+1. **GET /api/users**
+   - Retrieve all users.
 
-2. **GET /api/customers/:id**
-   - Retrieve a specific customer.
+2. **GET /api/users/:id**
+   - Retrieve a specific user.
 
-3. **POST /api/customers**
-   - Create a new customer.
+3. **POST /api/users**
+   - Create a new user.
    ```json
    {
        "name": "ahmed",
-       "email": "ahmed@customer.com",
+       "email": "ahmed@user.com",
        "phone": "01111138720",
        "address": "Madenty"
    }
    ```
 
-4. **PUT /api/customers/:id**
-   - Update customer information.
+4. **PUT /api/users/:id**
+   - Update user information.
    ```json
    {
        "name": "Mohamed",
-       "email": "Mohamed@customer.com",
+       "email": "Mohamed@user.com",
        "phone": "01111138720",
        "address": "6 october"
    }
    ```
 
-5. **DELETE /api/customers/:id**
-   - Delete a customer.
+5. **DELETE /api/users/:id**
+   - Delete a user.
 
 ### Products Module
 
@@ -140,10 +140,10 @@ Certainly! Below are the API endpoints formatted for your specified structure:
     - Retrieve the shopping cart for a specific order.
 
 13. **POST /api/cart/**
-    - Add a product to the shopping cart by adding the customerId & orderId.
+    - Add a product to the shopping cart by adding the userId & orderId.
     ```json
     {
-        "customerId": 297,
+        "userId": 297,
         "productId": 28,
         "quantity": 10
     }
@@ -153,7 +153,7 @@ Certainly! Below are the API endpoints formatted for your specified structure:
     - Update cart information.
     ```json
     {
-        "customerId": 2,
+        "userId": 2,
         "productId": 3,
         "quantity": 10000
     }
@@ -177,7 +177,7 @@ Certainly! Below are the API endpoints formatted for your specified structure:
     - Create a new order.
     ```json
     {
-        "customerId": 301,
+        "userId": 301,
         "productId": [40, 29, 42],
         "quantity": 17,
         "orderStatus": "created"
@@ -188,7 +188,7 @@ Certainly! Below are the API endpoints formatted for your specified structure:
     - Update order information.
     ```json
     {
-        "customerId": 301,
+        "userId": 301,
         "productId": [28, 41, 42],
         "quantity": 20,
         "orderStatus": "created"
@@ -204,7 +204,7 @@ Certainly! Below are the API endpoints formatted for your specified structure:
     - Retrieve all the payments.
 
 23. **GET /api/payment/payment-details/:paymentId**
-    - Retrieve the payment, order, customer details for a specific transaction.
+    - Retrieve the payment, order, user details for a specific transaction.
 
 24. **POST /api/payment/buy**
     - Process payment for a specific order.
@@ -236,15 +236,15 @@ npx cypress open
 
 ```
 Modular E-commerce Purchase/
-|-- customer/
+|-- user/
 |   |-- controllers
-|       |-- customerController.js
+|       |-- userController.js
 |   |-- db-script
-|       |-- customer.sql
+|       |-- user.sql
 |   |-- models
-|       |-- customerModel.js
+|       |-- userModel.js
 |   |-- routes
-|       |-- customerRoutes.js
+|       |-- userRoutes.js
 |-- orders/
 |   |-- controllers
 |       |-- orderController.js
@@ -285,7 +285,7 @@ Modular E-commerce Purchase/
 |   |-- downloads
 |       |-- downloads.htm.crdownload
 |   |-- e2e
-|       |-- 01-customerTest.cy.js
+|       |-- 01-userTest.cy.js
 |       |-- 02-productTest.cy.js
 |       |-- 03-orderTest.cy.js
 |       |-- 04-cartTest.cy.js

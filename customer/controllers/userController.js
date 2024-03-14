@@ -1,14 +1,14 @@
-const customersModel = require('../models/customerModel');
+const usersModel = require('../models/userModel');
 const db = require('../../db');
 
-const getAllCustomers = async (req, res) => {
+const getAllUsers = async (req, res) => {
     try {
         const dbConnection = await db.getDBConnection();
-        const customers = await customersModel.getAllCustomers(dbConnection);
+        const users = await usersModel.getAllUsers(dbConnection);
         res.status(200).json({
             status: 'success',
-            length: customers.length,
-            data: customers
+            length: users.length,
+            data: users
         });
     } catch (error) {
         console.error(error);
@@ -19,15 +19,15 @@ const getAllCustomers = async (req, res) => {
     }
 };
 
-const getCustomerById = async (req, res) => {
+const getUserById = async (req, res) => {
     try {
         const id = req.params.id;
         const dbConnection = await db.getDBConnection();
-        const customer = await customersModel.getCustomerById(id, dbConnection);
-        if (customer) {
+        const user = await usersModel.getUserById(id, dbConnection);
+        if (user) {
             res.status(200).json({
                 status: 'success',
-                data: customer
+                data: user
             });
         } else {
             res.status(404).json({ 
@@ -44,15 +44,15 @@ const getCustomerById = async (req, res) => {
     }
 };
 
-const createCustomer = async (req, res) => {
+const createUser = async (req, res) => {
     try {
         const dbConnection = await db.getDBConnection();
         const {name, email, phone, address} = req.body;
-        const customer = await customersModel.createCustomer({name, email, phone, address}, dbConnection);
+        const user = await usersModel.createUser({name, email, phone, address}, dbConnection);
         res.status(201).json({
             status: 'success',
-            message: 'Customer created successfully',
-            data: customer
+            message: 'User created successfully',
+            data: user
         });
     } catch (error) {
         console.error(error);
@@ -63,17 +63,17 @@ const createCustomer = async (req, res) => {
     }
 };
 
-const updateCustomer = async (req, res) => {
+const updateUser = async (req, res) => {
     try {
         const dbConnection = await db.getDBConnection();
         const id = req.params.id;
         const {name, email, phone, address} = req.body;
-        const customer = await customersModel.updateCustomer(id, {name, email, phone, address}, dbConnection);
-        if (customer) {
+        const user = await usersModel.updateUser(id, {name, email, phone, address}, dbConnection);
+        if (user) {
             res.status(201).json({
                 status: 'success',
-                message: 'Customer updated successfully',
-                data: customer
+                message: 'User updated successfully',
+                data: user
             });
         } else {
             res.status(404).json({ 
@@ -90,17 +90,17 @@ const updateCustomer = async (req, res) => {
     }
 };
 
-const deleteCustomer = async (req, res) => {
+const deleteUser = async (req, res) => {
     try {
         const dbConnection = await db.getDBConnection();
         const id = parseInt(req.params.id);
-        const customer = await customersModel.getCustomerById(id, dbConnection);
-        if (customer) {
-            // delete customer
-            await customersModel.deleteCustomer(id, dbConnection);
+        const user = await usersModel.getUserById(id, dbConnection);
+        if (user) {
+            // delete user
+            await usersModel.deleteUser(id, dbConnection);
             res.status(204).json({
                 status: 'success',
-                message: 'Customer deleted successfully'
+                message: 'User deleted successfully'
             });
    } else {
             res.status(404).json({ 
@@ -119,9 +119,9 @@ const deleteCustomer = async (req, res) => {
 };
 
 module.exports = {
-    getAllCustomers,
-    getCustomerById,
-    createCustomer,
-    updateCustomer,
-    deleteCustomer,
+    getAllUsers,
+    getUserById,
+    createUser,
+    updateUser,
+    deleteUser,
 };
